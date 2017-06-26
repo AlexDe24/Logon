@@ -10,26 +10,28 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Logon.Form
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для Login.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Login : Window
     {
-        public MainWindow()
+        Registration regist;
+
+        public Login()
         {
             InitializeComponent();
+            regist = new Registration();
 
             /*Grid personGrid = CreatePerson(null,null);
 
-            MyGrid.Children.Add(personGrid);
+                MyGrid.Children.Add(personGrid);
 
-            Grid.SetRow(personGrid, 1);
-            Grid.SetColumn(personGrid, 1);*/
+                Grid.SetRow(personGrid, 1);
+                Grid.SetColumn(personGrid, 1);*/
         }
         Grid CreatePerson(string Name, Image Avatar)
         {
@@ -67,6 +69,13 @@ namespace Logon.Form
             Grid.SetRow(lbl, 1);
 
             return gr;
+        }
+
+        private void Registration_Click(object sender, RoutedEventArgs e)
+        {
+            Visibility = Visibility.Hidden;
+            regist.ShowDialog();
+            Visibility = Visibility.Visible;
         }
     }
 }

@@ -9,9 +9,12 @@ namespace Logon.Logic
     public class Info
     {
         public string name;
-        public int pasword;
+        public string surname;
+        public string middlename;
+        public string pasword;
         public string birthday;
         public string gender;
         public string avatarName;
+        public int custom;
     }
 }
