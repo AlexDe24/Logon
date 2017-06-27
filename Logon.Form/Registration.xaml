@@ -5,29 +5,59 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Logon.Form"
         mc:Ignorable="d"
-        Title="Registration" Height="350" Width="400">
+        Title="Регистрация" Height="350" Width="550">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.75*"/>
+            <ColumnDefinition Width="0.85*"/>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Image Grid.Column="2" Grid.Row="0" Name="ProfileImage"/>
-        <StackPanel  Grid.Column="0" Grid.RowSpan="2" Name="ProfilePanelLabel">
-            <Label Content="Имя:" Height="25"/>
-            <Label Content="Фамилия:" Height="25"/>
+
+        <GridSplitter Grid.ColumnSpan="2" Grid.Row="0" ShowsPreview="False" Height="3"
+         HorizontalAlignment="Stretch" VerticalAlignment="Bottom" IsEnabled="False"/>
+
+        <GridSplitter Grid.Column="2" Grid.RowSpan="2" ShowsPreview="False" Width="3"
+        HorizontalAlignment="Left" VerticalAlignment="Stretch" IsEnabled="False"/>
+
+        <Image Grid.Column="2" Grid.Row="0" Name="ProfileImage" Source="C:\Logon\default.jpg"/>
+
+        <StackPanel  Grid.Column="2" Grid.Row="1" Name="ImagePanel">
+            <Button Name ="ImageLoad" Content="Загрузить картинку" HorizontalAlignment="Center" Margin="0,15,0,0" VerticalAlignment="Top" Click="ImageLoad_Click" />
+            <Button Name ="Save" Content="Создать" HorizontalAlignment="Center" Margin="0,25,0,0" VerticalAlignment="Top" Click="Save_Click"/>
+        </StackPanel>
+        <StackPanel  Grid.Column="0" Grid.Row="0" Name="ProfilePanelLabel">
+            <Label Content="Фамилия:*" Height="25"/>
+            <Label Content="Имя:*" Height="25"/>
             <Label Content="Отчество:" Height="25"/>
             <Label Content="Дата рождения:" Height="25"/>
+            <Label Content="Пол:" Height="25"/>
         </StackPanel>
-        <StackPanel  Grid.Column="1" Grid.RowSpan="2" Name="ProfilePanel">
-            <TextBox Height="25" Name="Name"/>
+        <StackPanel  Grid.Column="1" Grid.Row="0" Name="ProfilePanel">
             <TextBox Height="25" Name="Surname"/>
+            <TextBox Height="25" Name="Name"/>
             <TextBox Height="25" Name="Middlename"/>
-            <TextBox Height="25" Name="birthday"/>
+            <DockPanel Height="25">
+                <ComboBox Name="birthdayDay" DockPanel.Dock="Left"/>
+                <ComboBox Name="birthdayMonth" DockPanel.Dock="Left"/>
+                <ComboBox Name="birthdayYear" DockPanel.Dock="Right"/>
+            </DockPanel>
+            <DockPanel Height="25">
+                <RadioButton Name ="GenderM" Content="М            "/>
+                <RadioButton Name ="GenderW" Content="Ж"/>
+            </DockPanel>
         </StackPanel>
+        <StackPanel  Grid.Column="0" Grid.Row="1" Name="PasswordPanelLabel">
+            <Label Content="Введите пароль:" Height="25"/>
+            <Label Content="Введите пароль повторно:" Height="25"/>
+        </StackPanel>
+        <StackPanel  Grid.Column="1" Grid.Row="1" Name="PaswordPanel">
+            <PasswordBox Height="25" Name="PasswordOrig"/>
+            <PasswordBox Height="25" Name="PasswordControl"/>
+        </StackPanel>
+        
     </Grid>
 </Window>

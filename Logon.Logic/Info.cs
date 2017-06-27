@@ -11,10 +11,10 @@ namespace Logon.Logic
         public string name;
         public string surname;
         public string middlename;
-        public string pasword;
+        public string password;
         public string birthday;
         public string gender;
-        public string avatarName;
+        public string avatarAddres;
         public int custom;
     }
 }

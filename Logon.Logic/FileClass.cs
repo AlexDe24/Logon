@@ -15,30 +15,24 @@ namespace Logon.Logic
 
             List<string> personsList = new List<string>();
 
-            string[] dirs = Directory.GetFiles(".../Файлы/Профили/", "*.txt");
+            string[] dirs = Directory.GetFiles(@"C:\Logon\", "*.txt");
 
-            for (int i = 0; i < dirs.Length - 1; i++)
+            for (int i = 0; i < dirs.Length ; i++)
             {
-                foreach (string dir in dirs)
-                {
-                    String[] substrings = dir.Split('/');
 
-                    personsList.Add(Convert.ToString(substrings[3]));
-                }
+                StreamReader read = new StreamReader(dirs[i]);
 
-                StreamReader read = new StreamReader(".../Файлы/Профили/" + personsList[i]);
-
-                while (read.EndOfStream)
+                while (!read.EndOfStream)
                 {
                     person.Add(new Info
                     {
                         name = read.ReadLine(),
                         surname = read.ReadLine(),
                         middlename = read.ReadLine(),
-                        pasword = read.ReadLine(),
+                        password = read.ReadLine(),
                         birthday = read.ReadLine(),
                         gender = read.ReadLine(),
-                        avatarName = read.ReadLine(),
+                        avatarAddres = read.ReadLine(),
                         custom = Convert.ToInt32(read.ReadLine())
                     });
                 }
@@ -50,18 +44,23 @@ namespace Logon.Logic
 
         public void WriteProfile(Info person)
         {
-            StreamWriter write = new StreamWriter(".../Файлы/Профили/" + person.name + " " + person.surname);
+            StreamWriter write = new StreamWriter(@"C:\Logon\" + person.name + person.surname + ".txt");
 
             write.WriteLine(person.name);
             write.WriteLine(person.surname);
             write.WriteLine(person.middlename);
-            write.WriteLine(person.pasword);
+            write.WriteLine(person.password);
             write.WriteLine(person.birthday);
             write.WriteLine(person.gender);
-            write.WriteLine(person.avatarName);
+            write.WriteLine(person.avatarAddres);
             write.WriteLine(person.custom);
 
             write.Close();
+        }
+
+        public void ImageLoad()
+        {
+
         }
     }
 }
