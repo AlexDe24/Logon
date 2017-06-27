@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Logon.Form"
         mc:Ignorable="d"
-        Title="Регистрация" Height="350" Width="550">
+        Title="Регистрация" Height="350" Width="550" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -54,10 +54,9 @@
             <Label Content="Введите пароль:" Height="25"/>
             <Label Content="Введите пароль повторно:" Height="25"/>
         </StackPanel>
-        <StackPanel  Grid.Column="1" Grid.Row="1" Name="PaswordPanel">
+        <StackPanel  Grid.Column="1" Grid.Row="1" Name="PasswordPanel">
             <PasswordBox Height="25" Name="PasswordOrig"/>
             <PasswordBox Height="25" Name="PasswordControl"/>
         </StackPanel>
-        
     </Grid>
 </Window>

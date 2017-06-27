@@ -5,22 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Logon.Form"
         mc:Ignorable="d"
-        Title="Вход" Height="400" Width="800">
+        Title="Вход" Height="450" Width="800" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Closed="Window_Closed">
     <Grid Name = "MyGrid" Background="#FF5FD3FF">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
             <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="0.75*"/>
+            <RowDefinition Height="1.50*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Button Content="Регистрация" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Width="150" Name="Registration" FontFamily="Times New Roman" FontSize="24" Background="White" Click="Registration_Click"/>
+        <Grid Name = "PersonGrid" Grid.Row="1" Grid.ColumnSpan="7">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+        </Grid>
+
+        <Button Name="LeftRoll" Grid.Row="1" Grid.Column="0"  HorizontalAlignment="Left" Width="15" Content="&lt;" Click="Roll_Click"/>
+        <Button Name="RightRoll"  Grid.Row="1" Grid.Column="2"  HorizontalAlignment="Right" Width="15" Content="&gt;" Click="Roll_Click" />
+        
+        <Button Content="Регистрация" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="150" Name="Registration" FontFamily="Times New Roman" FontSize="24" Background="White" Click="Registration_Click"/>
+        <StackPanel Name="LoginPanel" Grid.Row="2" Grid.Column="1"  Margin="25" Visibility="Hidden">
+            <Button Name="Enter" Content="Вход"  VerticalAlignment="Center" HorizontalAlignment="Center" Width="150" FontFamily="Times New Roman" FontSize="24" Background="White" Click="Enter_Click"/>
+            <Label Content="Пароль" HorizontalAlignment="Center" FontFamily="Times New Roman" />
+            <PasswordBox Name="PasswordEnter"/>
+        </StackPanel>
+        <GridSplitter Grid.ColumnSpan="3" Grid.Row="0" Height="3"
+         HorizontalAlignment="Stretch" VerticalAlignment="Bottom" IsEnabled="False"/>
+        <GridSplitter Grid.ColumnSpan="3" Grid.Row="1" Height="3"
+         HorizontalAlignment="Stretch" VerticalAlignment="Bottom" IsEnabled="False"/>
     </Grid>
 </Window>

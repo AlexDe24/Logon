@@ -1,17 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Logon.Logic;
 
 namespace Logon.Form
@@ -21,15 +11,15 @@ namespace Logon.Form
     /// </summary>
     public partial class Registration : Window
     {
-        FileClass filework;
-        Info person;
+        FileClass fileWork;
+        PersonInfo person;
 
         public Registration()
         {
             InitializeComponent();
 
-            filework = new FileClass();
-            person = new Info();
+            fileWork = new FileClass();
+            person = new PersonInfo();
 
             for (int i = 1; i <= 31; i++)
             {
@@ -47,12 +37,11 @@ namespace Logon.Form
 
         private void ImageLoad_Click(object sender, RoutedEventArgs e)
         {
-            string _startDir = @"C:\Logon";
             string _addres = null;
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Image files (*.png;*.jpeg;*.jpg)|*.png;*.jpeg;*.jpg";
-            openFileDialog.InitialDirectory = _startDir;
+            openFileDialog.InitialDirectory = fileWork.homeDir;
             if (openFileDialog.ShowDialog() == true)
                 _addres = openFileDialog.FileName;
 
@@ -65,8 +54,10 @@ namespace Logon.Form
             person.name = Name.Text;
             person.surname = Surname.Text;
             person.middlename = Middlename.Text;
-            
-            person.birthday = birthdayDay.Text + "." + birthdayMonth.Text + "." + birthdayYear.Text;
+
+            person.birthDateDay = birthdayDay.Text;
+            person.birthDateMonth = birthdayMonth.Text;
+            person.birthDateYear = birthdayYear.Text;
 
             if (GenderM.IsPressed)
                 person.gender = "М";
@@ -74,17 +65,18 @@ namespace Logon.Form
                 person.gender = "Ж";
 
             if (person.avatarAddres == null)
-                person.avatarAddres = @"C:\Logon\default.jpg";
+                person.avatarAddres = fileWork.homeDir + "default.jpg";
 
             if (PasswordOrig.Password != PasswordControl.Password)
             {
-                MessageBox.Show("Пароли не совпадают!", "Ошбка!");
+                MessageBox.Show("Пароли не совпадают!", "Ошибка!");
             }
             else
             {
                 person.password = PasswordOrig.Password;
-                filework.WriteProfile(person);
+                fileWork.WriteProfile(person);
             }
+            
             Close();
 
         }

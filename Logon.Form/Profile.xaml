@@ -1,0 +1,66 @@
+﻿<Window x:Class="Logon.Form.Profile"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Logon.Form"
+        mc:Ignorable="d"
+        Title="Профиль" Height="350" Width="550" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.85*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <GridSplitter Grid.ColumnSpan="2" Grid.Row="0" ShowsPreview="False" Height="3"
+         HorizontalAlignment="Stretch" VerticalAlignment="Bottom" IsEnabled="False"/>
+
+        <GridSplitter Grid.Column="2" Grid.RowSpan="2" ShowsPreview="False" Width="3"
+        HorizontalAlignment="Left" VerticalAlignment="Stretch" IsEnabled="False"/>
+
+        <Image Grid.Column="2" Grid.Row="0" Name="ProfileImage" Source="C:\Logon\default.jpg"/>
+
+        <StackPanel  Grid.Column="2" Grid.Row="1" Name="ImagePanel" >
+            <Button Name ="ImageLoad" Content="Загрузить картинку" HorizontalAlignment="Center" Margin="0,15,0,0" VerticalAlignment="Top" Click="ImageLoad_Click" Visibility="Hidden"/>
+            <Button Name ="Edit" Content="Редактировать" HorizontalAlignment="Center" Margin="0,25,0,0" VerticalAlignment="Top" Click="Edit_Click" />
+            <Button Name ="EditPassword" Content="Сменить пароль" HorizontalAlignment="Center" Margin="0,25,0,0" VerticalAlignment="Top" Click="EditPassword_Click" Visibility="Hidden"/>
+        </StackPanel>
+        
+        <StackPanel  Grid.Column="0" Grid.Row="0" Name="ProfilePanelLabel" >
+            <Label Name="Surname" Height="25"/>
+            <Label Name="Name" Height="25"/>
+            <Label Name="Middlename" Height="25"/>
+            <Label Name="BirthDate" Height="25"/>
+            <Label Name="Gender" Height="25"/>
+        </StackPanel>
+        <StackPanel  Grid.Column="1" Grid.Row="0" Name="ProfilePanel" Visibility="Hidden">
+            <TextBox Height="25" Name="SurnameNew"/>
+            <TextBox Height="25" Name="NameNew"/>
+            <TextBox Height="25" Name="MiddlenameNew"/>
+            <DockPanel Height="25">
+                <ComboBox Name="birthDay" DockPanel.Dock="Left"/>
+                <ComboBox Name="birthMonth" DockPanel.Dock="Left"/>
+                <ComboBox Name="birthYear" DockPanel.Dock="Right"/>
+            </DockPanel>
+            <DockPanel Height="25">
+                <RadioButton Name ="GenderM" Content="М            "/>
+                <RadioButton Name ="GenderW" Content="Ж"/>
+            </DockPanel>
+        </StackPanel>
+        <StackPanel  Grid.Column="0" Grid.Row="1" Name="PasswordPanelLabel" Visibility="Hidden">
+            <Label Content="Введите старый пароль:" Height="25"/>
+            <Label Content="Введите новый пароль:" Height="25"/>
+            <Label Content="Введите пароль повторно:" Height="25"/>
+        </StackPanel>
+        <StackPanel  Grid.Column="1" Grid.Row="1" Name="PasswordPanel" Visibility="Hidden">
+            <PasswordBox Height="25" Name="PasswordOld"/>
+            <PasswordBox Height="25" Name="PasswordOrig"/>
+            <PasswordBox Height="25" Name="PasswordControl"/>
+        </StackPanel>
+    </Grid>
+</Window>

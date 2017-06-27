@@ -1,21 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace Logon.Logic
 {
     public class FileClass
     {
-        public List<Info> ReadProfiles()
+        public string homeDir;
+
+        public FileClass()
         {
-            List<Info> person = new List<Info>();
+            homeDir = Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + @"\Logon\";
+        }
+        /// <summary>
+        /// Чтение пользователей из файла
+        /// </summary>
+        /// <returns>список пользователей</returns>
+        public List<PersonInfo> ReadProfiles()
+        {
+            List<PersonInfo> person = new List<PersonInfo>();
 
             List<string> personsList = new List<string>();
 
-            string[] dirs = Directory.GetFiles(@"C:\Logon\", "*.txt");
+            string[] dirs = Directory.GetFiles(homeDir, "*.txt");
 
             for (int i = 0; i < dirs.Length ; i++)
             {
@@ -24,16 +31,17 @@ namespace Logon.Logic
 
                 while (!read.EndOfStream)
                 {
-                    person.Add(new Info
+                    person.Add(new PersonInfo
                     {
                         name = read.ReadLine(),
                         surname = read.ReadLine(),
                         middlename = read.ReadLine(),
                         password = read.ReadLine(),
-                        birthday = read.ReadLine(),
+                        birthDateDay = read.ReadLine(),
+                        birthDateMonth = read.ReadLine(),
+                        birthDateYear = read.ReadLine(),
                         gender = read.ReadLine(),
                         avatarAddres = read.ReadLine(),
-                        custom = Convert.ToInt32(read.ReadLine())
                     });
                 }
 
@@ -42,25 +50,31 @@ namespace Logon.Logic
             return person;
         }
 
-        public void WriteProfile(Info person)
+        /// <summary>
+        /// Запись пользователя в файл
+        /// </summary>
+        /// <param name="person">класс пользователя
+        /// </param>
+        public void WriteProfile(PersonInfo person)
         {
-            StreamWriter write = new StreamWriter(@"C:\Logon\" + person.name + person.surname + ".txt");
+            StreamWriter write = new StreamWriter(homeDir + person.name + person.surname + ".txt");
 
             write.WriteLine(person.name);
             write.WriteLine(person.surname);
             write.WriteLine(person.middlename);
             write.WriteLine(person.password);
-            write.WriteLine(person.birthday);
+            write.WriteLine(person.birthDateDay);
+            write.WriteLine(person.birthDateMonth);
+            write.WriteLine(person.birthDateYear);
             write.WriteLine(person.gender);
             write.WriteLine(person.avatarAddres);
-            write.WriteLine(person.custom);
 
             write.Close();
         }
 
-        public void ImageLoad()
+        public void DoCopyIn()
         {
-
+            //File.Copy(HomeDir, "Logon");
         }
     }
 }
