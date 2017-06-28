@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Logon.Form"
         mc:Ignorable="d"
-        Title="Профиль" Height="350" Width="550" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="Профиль" Height="350" Width="550" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="ToolWindow">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -25,18 +25,19 @@
 
         <Image Grid.Column="2" Grid.Row="0" Name="ProfileImage" Source="C:\Logon\default.jpg"/>
 
-        <StackPanel  Grid.Column="2" Grid.Row="1" Name="ImagePanel" >
-            <Button Name ="ImageLoad" Content="Загрузить картинку" HorizontalAlignment="Center" Margin="0,15,0,0" VerticalAlignment="Top" Click="ImageLoad_Click" Visibility="Hidden"/>
-            <Button Name ="Edit" Content="Редактировать" HorizontalAlignment="Center" Margin="0,25,0,0" VerticalAlignment="Top" Click="Edit_Click" />
-            <Button Name ="EditPassword" Content="Сменить пароль" HorizontalAlignment="Center" Margin="0,25,0,0" VerticalAlignment="Top" Click="EditPassword_Click" Visibility="Hidden"/>
+        <StackPanel  Grid.Column="2" Grid.Row="1" Name="ControlPanel" Margin="35,0,35,0">
+            <Button Name ="ImageLoad" Content="Загрузить картинку" Margin="0,15,0,0" VerticalAlignment="Top" Click="ImageLoad_Click" Visibility="Hidden"/>
+            <Button Name ="Edit" Content="Редактировать" Margin="0,15,0,0" VerticalAlignment="Top" Click="Edit_Click" />
+            <Button Name ="EditPassword" Content="Сменить пароль" Margin="0,15,0,0" VerticalAlignment="Top" Click="EditPassword_Click" Visibility="Hidden"/>
+            <Button Name ="DelPerson" Content="Удалить профиль" Margin="0,15,0,0" VerticalAlignment="Top" Click="DelPerson_Click"/>
         </StackPanel>
         
         <StackPanel  Grid.Column="0" Grid.Row="0" Name="ProfilePanelLabel" >
-            <Label Name="Surname" Height="25"/>
-            <Label Name="Name" Height="25"/>
-            <Label Name="Middlename" Height="25"/>
-            <Label Name="BirthDate" Height="25"/>
-            <Label Name="Gender" Height="25"/>
+            <Label Content ="Фамилия: " Name="Surname" Height="25"/>
+            <Label Content ="Имя: " Name="Name" Height="25"/>
+            <Label Content ="Отчество: " Name="Middlename" Height="25"/>
+            <Label Content ="Дата рождения: " Name="BirthDate" Height="25"/>
+            <Label Content ="Пол: " Name="Gender" Height="25"/>
         </StackPanel>
         <StackPanel  Grid.Column="1" Grid.Row="0" Name="ProfilePanel" Visibility="Hidden">
             <TextBox Height="25" Name="SurnameNew"/>

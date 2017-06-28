@@ -3,6 +3,9 @@ using System;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using Logon.Logic;
+using System.Windows.Controls;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Logon.Form
 {
@@ -11,15 +14,21 @@ namespace Logon.Form
     /// </summary>
     public partial class Registration : Window
     {
-        FileClass fileWork;
-        PersonInfo person;
+        List<PersonInfo> _allPersons;
+        FileClass _fileWork;
+        public PersonInfo newPerson;
 
-        public Registration()
+        /// <summary>
+        /// Класс управления регистрацией
+        /// </summary>
+        /// <param name="allPersons">список всех пользователей для проверки уникальности логина</param>
+        public Registration(List<PersonInfo> allPersons)
         {
             InitializeComponent();
 
-            fileWork = new FileClass();
-            person = new PersonInfo();
+            _allPersons = allPersons; //список всех пользователей для проверки логина
+            _fileWork = new FileClass(); //класс работы с файлами
+            newPerson = new PersonInfo(); //класс данных о пользователе
 
             for (int i = 1; i <= 31; i++)
             {
@@ -35,50 +44,74 @@ namespace Logon.Form
             }
         }
 
+        /// <summary>
+        /// Загрузка изображения
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ImageLoad_Click(object sender, RoutedEventArgs e)
         {
             string _addres = null;
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Image files (*.png;*.jpeg;*.jpg)|*.png;*.jpeg;*.jpg";
-            openFileDialog.InitialDirectory = fileWork.homeDir;
+            openFileDialog.InitialDirectory = _fileWork.homeDirImage;
             if (openFileDialog.ShowDialog() == true)
                 _addres = openFileDialog.FileName;
 
-            ProfileImage.Source = new BitmapImage(new Uri(_addres));
-            person.avatarAddres = _addres;
+            if (_addres != null)
+            {
+                ProfileImage.Source = new BitmapImage(new Uri(_addres));
+                newPerson.avatarAddres = _addres;
+            }
         }
 
+        /// <summary>
+        /// При нажатии кнопки "Сохранить"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            person.name = Name.Text;
-            person.surname = Surname.Text;
-            person.middlename = Middlename.Text;
+            newPerson.name = Name.Text;
+            newPerson.surname = Surname.Text;
+            newPerson.middlename = Middlename.Text;
 
-            person.birthDateDay = birthdayDay.Text;
-            person.birthDateMonth = birthdayMonth.Text;
-            person.birthDateYear = birthdayYear.Text;
+            newPerson.birthDateDay = birthdayDay.Text;
+            newPerson.birthDateMonth = birthdayMonth.Text;
+            newPerson.birthDateYear = birthdayYear.Text;
 
             if (GenderM.IsPressed)
-                person.gender = "М";
+                newPerson.gender = "М";
             else
-                person.gender = "Ж";
+                newPerson.gender = "Ж";
 
-            if (person.avatarAddres == null)
-                person.avatarAddres = fileWork.homeDir + "default.jpg";
+            if (newPerson.avatarAddres == null)
+                newPerson.avatarAddres = "pack://siteoforigin:,,,/Resources/default.jpg";
 
-            if (PasswordOrig.Password != PasswordControl.Password)
-            {
-                MessageBox.Show("Пароли не совпадают!", "Ошибка!");
-            }
+
+            if (Login.Text == "")
+                MessageBox.Show("Введите логин!", "Ошибка!");
             else
             {
-                person.password = PasswordOrig.Password;
-                fileWork.WriteProfile(person);
-            }
-            
-            Close();
+                if (_allPersons.Any(x => x.login == Login.Text))
+                    MessageBox.Show("Логин уже занят!", "Ошибка!");
+                else
+                {
+                    newPerson.login = Login.Text;
+                    if (PasswordOrig.Password != PasswordControl.Password)
+                    {
+                        MessageBox.Show("Пароли не совпадают!", "Ошибка!");
+                    }
+                    else
+                    {
+                        newPerson.password = PasswordOrig.Password;
+                        _fileWork.WriteProfile(newPerson);
 
+                        Close();
+                    }
+                }
+            }
         }
     }
 }

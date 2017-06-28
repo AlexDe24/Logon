@@ -15,30 +15,38 @@ namespace Logon.Form
         FileClass fileWork;
         bool isEditPassword;
 
-        public Profile(PersonInfo person)
+        /// <summary>
+        /// Класс управления профилем
+        /// </summary>
+        /// <param name="personNow">выбранный пользователь</param>
+        /// <param name="personProfile">пользователь в сети</param>
+        public Profile(PersonInfo personNow, PersonInfo personProfile)
         {
             InitializeComponent();
 
-            fileWork = new FileClass();
-            _person = person;
+            fileWork = new FileClass(); //класс работы с файлами
+            _person = personNow; //класс данных о пользователе
 
-            Name.Content = _person.name;
-            Surname.Content = _person.surname;
-            Middlename.Content = _person.middlename;
+            if (personNow.login != personProfile.login && personProfile.login != "Admin")
+                ControlPanel.Visibility = Visibility.Hidden;
 
-            BirthDate.Content = _person.birthDateDay + "." + _person.birthDateMonth + "." + _person.birthDateYear;
+            Name.Content += _person.name;
+            Surname.Content += _person.surname;
+            Middlename.Content += _person.middlename;
 
-            Gender.Content = _person.gender;
+            BirthDate.Content += _person.birthDateDay + "." + _person.birthDateMonth + "." + _person.birthDateYear;
+
+            Gender.Content += _person.gender;
 
             ProfileImage.Source = new BitmapImage(new Uri(_person.avatarAddres));
 
             for (int i = 1; i <= 31; i++)
             {
-                birthDay.Items.Add(i);
+                birthDay.Items.Add(i-1);
             }
             for (int i = 1; i <= 12; i++)
             {
-                birthMonth.Items.Add(i);
+                birthMonth.Items.Add(i-1);
             }
             for (int i = 0; i < 120; i++)
             {
@@ -58,31 +66,40 @@ namespace Logon.Form
             catch (Exception)
             {
             }
-
-            if (_person.gender == "М")
-                GenderM.IsChecked = true;
-            else
-                GenderW.IsChecked = true;
         }
 
+        /// <summary>
+        /// Загрузка изображения
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ImageLoad_Click(object sender, RoutedEventArgs e)
         {
-            string _startDir = fileWork.homeDir;
             string _addres = null;
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Image files (*.png;*.jpeg;*.jpg)|*.png;*.jpeg;*.jpg";
-            openFileDialog.InitialDirectory = _startDir;
+            openFileDialog.InitialDirectory = fileWork.homeDirImage;
             if (openFileDialog.ShowDialog() == true)
                 _addres = openFileDialog.FileName;
 
-            ProfileImage.Source = new BitmapImage(new Uri(_addres));
-            _person.avatarAddres = _addres;
+            if (_addres != null)
+            {
+                ProfileImage.Source = new BitmapImage(new Uri(_addres));
+                _person.avatarAddres = _addres;
+            }
         }
 
+        /// <summary>
+        /// Срабатывает при нажатии кнопки "Редактировать"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
             Edit.Content = "Сохранить";
+
+            Edit.Click -= Edit_Click;
             Edit.Click += Save_Click;
             
             ProfilePanel.Visibility = Visibility.Visible;
@@ -90,9 +107,14 @@ namespace Logon.Form
             EditPassword.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// Срабатывает при нажатии кнопки "Сохранить"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            Edit.Click += Edit_Click;
+            fileWork.DelProfile(_person);
 
             _person.name = NameNew.Text;
             _person.surname = SurnameNew.Text;
@@ -102,22 +124,22 @@ namespace Logon.Form
             _person.birthDateMonth = birthMonth.Text;
             _person.birthDateYear = birthYear.Text;
 
-            if (GenderM.IsPressed)
+            if (GenderM.IsChecked == true)
                 _person.gender = "М";
             else
                 _person.gender = "Ж";
 
             if (_person.avatarAddres == null)
-                _person.avatarAddres = fileWork.homeDir + "default.jpg";
+                _person.avatarAddres = fileWork.homeDirImage + "default.jpg";
 
             if (isEditPassword)
-                if (PasswordOrig.Password != _person.password)
+                if (PasswordOld.Password != _person.password)
                 {
                     MessageBox.Show("Пароль неверный!", "Ошибка!");
                 }
                 else
                 {
-                    if (PasswordOrig.Password != PasswordControl.Password)
+                    if (PasswordControl.Password != PasswordOrig.Password)
                     {
                         MessageBox.Show("Пароли не совпадают!", "Ошибка!");
                     }
@@ -137,12 +159,38 @@ namespace Logon.Form
             }
         }
 
+        /// <summary>
+        /// Срабатывает при нажатии кнопки "Сменить пароль"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void EditPassword_Click(object sender, RoutedEventArgs e)
         {
-            isEditPassword = true;
+            if (!isEditPassword)
+            {
+                isEditPassword = true;
 
-            PasswordPanel.Visibility = Visibility.Visible;
-            PasswordPanelLabel.Visibility = Visibility.Visible;
+                PasswordPanel.Visibility = Visibility.Visible;
+                PasswordPanelLabel.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                isEditPassword = false;
+
+                PasswordPanel.Visibility = Visibility.Hidden;
+                PasswordPanelLabel.Visibility = Visibility.Hidden;
+            }
+        }
+
+        /// <summary>
+        /// Происходит при нажатии кнопки "Удалить"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DelPerson_Click(object sender, RoutedEventArgs e)
+        {
+            fileWork.DelProfile(_person);
+            Close();
         }
     }
 }

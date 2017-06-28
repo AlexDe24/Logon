@@ -4,16 +4,22 @@ using System.IO;
 
 namespace Logon.Logic
 {
+    /// <summary>
+    /// Класс работы с файлами
+    /// </summary>
     public class FileClass
     {
-        public string homeDir;
+        public string homeDirPersons;
+        public string homeDirImage;
 
         public FileClass()
         {
-            homeDir = Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + @"\Logon\";
+            homeDirPersons = @"Persons\";
+            homeDirImage = @"Resources\";
         }
+
         /// <summary>
-        /// Чтение пользователей из файла
+        /// Чтение профилей из файла
         /// </summary>
         /// <returns>список пользователей</returns>
         public List<PersonInfo> ReadProfiles()
@@ -22,7 +28,7 @@ namespace Logon.Logic
 
             List<string> personsList = new List<string>();
 
-            string[] dirs = Directory.GetFiles(homeDir, "*.txt");
+            string[] dirs = Directory.GetFiles(homeDirPersons, "*.txt");
 
             for (int i = 0; i < dirs.Length ; i++)
             {
@@ -33,6 +39,7 @@ namespace Logon.Logic
                 {
                     person.Add(new PersonInfo
                     {
+                        login = read.ReadLine(),
                         name = read.ReadLine(),
                         surname = read.ReadLine(),
                         middlename = read.ReadLine(),
@@ -51,14 +58,15 @@ namespace Logon.Logic
         }
 
         /// <summary>
-        /// Запись пользователя в файл
+        /// Запись профиля в файл
         /// </summary>
         /// <param name="person">класс пользователя
         /// </param>
         public void WriteProfile(PersonInfo person)
         {
-            StreamWriter write = new StreamWriter(homeDir + person.name + person.surname + ".txt");
+            StreamWriter write = new StreamWriter(homeDirPersons + person.login + ".txt");
 
+            write.WriteLine(person.login);
             write.WriteLine(person.name);
             write.WriteLine(person.surname);
             write.WriteLine(person.middlename);
@@ -72,9 +80,13 @@ namespace Logon.Logic
             write.Close();
         }
 
-        public void DoCopyIn()
+        /// <summary>
+        /// Удаление профиля
+        /// </summary>
+        /// <param name="person"></param>
+        public void DelProfile(PersonInfo person)
         {
-            //File.Copy(HomeDir, "Logon");
+            File.Delete(homeDirPersons + person.login + ".txt");
         }
     }
 }

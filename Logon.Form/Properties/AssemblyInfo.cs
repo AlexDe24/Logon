@@ -7,11 +7,11 @@ using System.Windows;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
-[assembly: AssemblyTitle("Logon.Form")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Logon")]
+[assembly: AssemblyDescription("Позвляет создавать пользователей и редактировать их.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Logon.Form")]
+[assembly: AssemblyProduct("Logon")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

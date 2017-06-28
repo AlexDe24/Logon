@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Logon.Form"
         mc:Ignorable="d"
-        Title="Вход" Height="450" Width="800" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Closed="Window_Closed">
-    <Grid Name = "MyGrid" Background="#FF5FD3FF">
+        Title="Вход" Height="450" Width="800" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="ToolWindow">
+    <Grid Name = "MyGrid" Background="#FF5FD3FF" MouseWheel="MyGrid_MouseWheel">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
@@ -29,15 +29,42 @@
             </Grid.ColumnDefinitions>
         </Grid>
 
+        <ComboBox VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Column = "0" Grid.Row="2" Width="130" SelectedIndex="0" Margin="25">
+            <ComboBoxItem>
+                <Button Width="100"  Content="Регистрация"  Name="Registration" Background="White" Click="Registration_Click"/>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <Button Width="100"  Content="Поиск Выкл."  Name="Find" Background="White" Click="Find_Click" />
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <Button Width="100"  Content="Помощь"  Name="Help" Background="White" Click="Help_Click"/>
+            </ComboBoxItem>
+            <ComboBoxItem Visibility="Hidden" Height="0" Name="LogOutBox">
+                <Button Width="100" Content="Выход"  Name="LogOut" Background="White" Click="LogOut_Click"/>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <Button Width="100"  Content="Закрыть"  Name="Exit" Background="White" Click="Exit_Click"/>
+            </ComboBoxItem>
+        </ComboBox>
+
+        <StackPanel Name="FindPanel" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column = "0" Grid.Row="2" Width="200" Margin="25,25,0,0" Visibility="Hidden">
+            <Label Content="Введите логин для поиска."/>
+            <TextBox Name="FindTextBox" KeyUp="FindTextBox_KeyUp"/>
+        </StackPanel>
+        
         <Button Name="LeftRoll" Grid.Row="1" Grid.Column="0"  HorizontalAlignment="Left" Width="15" Content="&lt;" Click="Roll_Click"/>
         <Button Name="RightRoll"  Grid.Row="1" Grid.Column="2"  HorizontalAlignment="Right" Width="15" Content="&gt;" Click="Roll_Click" />
-        
-        <Button Content="Регистрация" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="150" Name="Registration" FontFamily="Times New Roman" FontSize="24" Background="White" Click="Registration_Click"/>
-        <StackPanel Name="LoginPanel" Grid.Row="2" Grid.Column="1"  Margin="25" Visibility="Hidden">
+
+        <Label Name ="LogPerson" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center"  VerticalAlignment="Center" FontFamily="Times New Roman" FontSize="20"/>
+
+        <StackPanel Name="LoginPanel" Grid.Row="2" Grid.Column="1"  Margin="0,25,0,25"  >
             <Button Name="Enter" Content="Вход"  VerticalAlignment="Center" HorizontalAlignment="Center" Width="150" FontFamily="Times New Roman" FontSize="24" Background="White" Click="Enter_Click"/>
-            <Label Content="Пароль" HorizontalAlignment="Center" FontFamily="Times New Roman" />
-            <PasswordBox Name="PasswordEnter"/>
+            <StackPanel Name="PasswordPanel">
+                <Label Content="Введите пароль" HorizontalAlignment="Center" FontFamily="Times New Roman" />
+                <PasswordBox Name="PasswordEnter"/>
+            </StackPanel>
         </StackPanel>
+        
         <GridSplitter Grid.ColumnSpan="3" Grid.Row="0" Height="3"
          HorizontalAlignment="Stretch" VerticalAlignment="Bottom" IsEnabled="False"/>
         <GridSplitter Grid.ColumnSpan="3" Grid.Row="1" Height="3"
