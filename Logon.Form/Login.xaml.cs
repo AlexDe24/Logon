@@ -26,21 +26,20 @@ namespace Logon.Form
         int _startI;
         int _endI;
 
-        public Login()
+        public Login(PersonInfo logPerson)
         {
             InitializeComponent();
 
             _startI = 0;
             _endI = 3;
 
-            _logPerson = null; //пользватель, под которым сделан вход
+            _logPerson = logPerson; //пользватель, под которым сделан вход
             _persons = new List<PersonInfo>(); //класс данных о пользователе
             _fileWork = new FileClass(); //класс работы с файлами
             _personBox = new List<GroupBox>(); //GroupBox для отображения пользователей
             _findPerson = new List<PersonInfo>(); //лист для поиска по параметру
 
             Find.Content = "Поиск Выкл.";
-
             Update();
         }
 
@@ -49,6 +48,8 @@ namespace Logon.Form
         /// </summary>
         void Update()
         {
+            Profile.Visibility = Visibility.Hidden;
+
             if (_logPerson != null)
             {
                 LogOutBox.Height = 25;
@@ -90,9 +91,6 @@ namespace Logon.Form
                     k++;
                 }
             }
-
-            LoginPanel.Visibility = Visibility.Hidden;
-            PasswordEnter.Clear();
         }
 
         /// <summary>
@@ -171,12 +169,9 @@ namespace Logon.Form
                 B = 100
             };
 
-            PasswordEnter.Clear();
+            Profile.Visibility = Visibility.Visible;
             (sender as GroupBox).Opacity = 50;
             (sender as GroupBox).Background = new SolidColorBrush(backCol);
-
-            LoginPanel.Visibility = Visibility.Visible;
-            PasswordEnter.Focus();
         }
 
         /// <summary>
@@ -196,15 +191,7 @@ namespace Logon.Form
 
             if (personsCount < _fileWork.ReadProfiles().Count)
             {
-                LogOut_Click(null, null);
-
                 _logPerson = _regist.newPerson;
-
-                PasswordPanel.Visibility = Visibility.Hidden;
-                Enter.Content = "Просмотреть профиль";
-                Enter.Click -= Enter_Click;
-                Enter.Click += Profile_Click;
-                Enter.Width = 250;
             }
 
             Update();
@@ -236,30 +223,6 @@ namespace Logon.Form
         }
 
         /// <summary>
-        /// Вход в учётную запись
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Enter_Click(object sender, RoutedEventArgs e)
-        {
-            PersonInfo person = _persons.Where(x => "ID" + x.login == _personBox.Where(y => y.Opacity == 50).First().Name).First();
-
-            if (PasswordEnter.Password == person.password)
-            {
-                PasswordPanel.Visibility = Visibility.Hidden;
-                Enter.Content = "Просмотреть профиль";
-                Enter.Click -= Enter_Click;
-                Enter.Click += Profile_Click;
-                Enter.Width = 250;
-                _logPerson = person;
-                Update();
-            }
-            else
-                MessageBox.Show("Неверный пароль!", "Ошибка!");
-        }
-
-
-        /// <summary>
         /// При нажатии кнопки "Закрыть"
         /// </summary>
         /// <param name="sender"></param>
@@ -276,14 +239,8 @@ namespace Logon.Form
         /// <param name="e"></param>
         private void LogOut_Click(object sender, RoutedEventArgs e)
         {
-            PasswordPanel.Visibility = Visibility.Visible;
-            Enter.Content = "Вход";
-            Enter.Click += Enter_Click;
-            Enter.Click -= Profile_Click;
-            Enter.Width = 150;
-
-            _logPerson = null;
-            Update();
+            _fileWork.IsLogonFalse();
+            Close();
         }
 
         /// <summary>
@@ -320,7 +277,7 @@ namespace Logon.Form
         }
 
         /// <summary>
-        /// ППри вводе текса в поиск
+        /// При вводе текса в поиск
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
