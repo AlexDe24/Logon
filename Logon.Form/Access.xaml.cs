@@ -34,13 +34,15 @@ namespace Logon.Form
             _persons = _fileWork.ReadProfiles(); //класс данных о пользователе
             _findPerson = new List<PersonInfo>(); //лист для поиска по параметру
 
+            
+
             try
             {
-                _mainForm = new Login(_fileWork.IsLogonRead());
+                _mainForm = new Login(_fileWork.IsLogonRead(), this);
 
                 Visibility = Visibility.Hidden;
                 _mainForm.ShowDialog();
-                Close();
+                //Close();
             }
             catch (Exception)
             { 
@@ -48,6 +50,7 @@ namespace Logon.Form
 
             for (int i = 0; i < _persons.Count; i++)
             {
+                Image chooseImage = new Image();
                 LoginEnter.Items.Add(_persons[i].login);
             }
         }
@@ -56,13 +59,13 @@ namespace Logon.Form
         {
             if (LoginEnter.SelectedIndex >= 0)
             {
-                _mainForm = new Login(_persons[LoginEnter.SelectedIndex]);
+                _mainForm = new Login(_persons[LoginEnter.SelectedIndex], this);
 
                 if (_persons[LoginEnter.SelectedIndex].password == PasswordEnter.Password)
                 {
                     Visibility = Visibility.Hidden;
                     _mainForm.ShowDialog();
-                    Close();
+                    //Close();
                 }
                 else
                     MessageBox.Show("Неверный пароль", "Ошибка!");
@@ -74,6 +77,7 @@ namespace Logon.Form
                 else
                     _fileWork.IsLogonFalse();
             }
+            PasswordEnter.Clear();
         }
 
         private void LoginEnter_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -94,11 +98,11 @@ namespace Logon.Form
 
             if (personsCount < _fileWork.ReadProfiles().Count)
             {
-                _mainForm = new Login(_regist.newPerson);
+                _mainForm = new Login(_regist.newPerson, this);
 
                 Visibility = Visibility.Hidden;
                 _mainForm.ShowDialog();
-                Close();
+                //Close();
             }
             
         }

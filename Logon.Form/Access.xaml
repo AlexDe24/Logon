@@ -25,10 +25,12 @@
                         <ComboBox Name="LoginEnter" IsSynchronizedWithCurrentItem="True" IsEditable="True" SelectionChanged="LoginEnter_SelectionChanged"/>
                         <Label Content="Пароль" HorizontalAlignment="Left" FontFamily="Times New Roman" />
                         <PasswordBox Name="PasswordEnter"/>
-                        <CheckBox Name="IsLog" Content="Оставаться в сети" Margin="0,5,0,00"/>
-                        <Button Name="Enter" Content="Вход"  VerticalAlignment="Center" HorizontalAlignment="Center" Width="150" FontFamily="Times New Roman" FontSize="16" Background="White" Click="Enter_Click" Margin="0,10,0,00"/>
-                        <Button Name="Regist" Content="Регистрация"  VerticalAlignment="Center" HorizontalAlignment="Center" Width="150" FontFamily="Times New Roman" FontSize="16" Background="White" Click="Regist_Click" Margin="0,15,0,00"/>
-                        <Button Name="Exit" Content="Выход"  VerticalAlignment="Center" HorizontalAlignment="Center" Width="150" FontFamily="Times New Roman" FontSize="16" Background="White" Click="Exit_Click" Margin="0,15,0,00"/>
+                        
+                        <CheckBox Name="IsLog" Content="Оставаться в сети" Margin="0,5,0,0"/>
+
+                        <Button Template="{DynamicResource ButtonOwalEnter}" Name="Enter"  Click="Enter_Click" Margin="0,6,0,0"/>
+                        <Button Template="{DynamicResource ButtonOwalReg}" Name="Regist" Click="Regist_Click" Margin="0,6,0,0"/>
+                        <Button Template="{DynamicResource ButtonOwalExit}" Name="Exit" Click="Exit_Click" Margin="0,6,0,0"/>
                     </StackPanel>
                 </StackPanel>
             </Grid>

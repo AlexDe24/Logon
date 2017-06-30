@@ -22,13 +22,16 @@ namespace Logon.Form
         List<GroupBox> _personBox;
         List<PersonInfo> _findPerson;
         PersonInfo _logPerson;
+        Access _LogForm;
 
         int _startI;
         int _endI;
 
-        public Login(PersonInfo logPerson)
+        public Login(PersonInfo logPerson, Access LogForm)
         {
             InitializeComponent();
+
+            _LogForm = LogForm;
 
             _startI = 0;
             _endI = 3;
@@ -223,27 +226,6 @@ namespace Logon.Form
         }
 
         /// <summary>
-        /// При нажатии кнопки "Закрыть"
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Exit_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
-        /// <summary>
-        /// При нажатии кнопки "Выход"
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void LogOut_Click(object sender, RoutedEventArgs e)
-        {
-            _fileWork.IsLogonFalse();
-            Close();
-        }
-
-        /// <summary>
         /// При нажатии кнопки "Поиск"
         /// </summary>
         /// <param name="sender"></param>
@@ -342,6 +324,34 @@ namespace Logon.Form
                 Roll(false);
             }
             
+        }
+
+        /// <summary>
+        /// При нажатии кнопки "Закрыть"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            _LogForm.Close();
+            Close();
+        }
+
+        /// <summary>
+        /// При нажатии кнопки "Выход"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LogOut_Click(object sender, RoutedEventArgs e)
+        {
+            _fileWork.IsLogonFalse();
+            _LogForm.Visibility = Visibility.Visible;
+            Close();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+                
         }
     }
 }

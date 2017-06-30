@@ -4,6 +4,60 @@
              xmlns:local="clr-namespace:Logon.Form"
              StartupUri="Access.xaml">
     <Application.Resources>
-         
+
+        <ControlTemplate x:Key="ButtonOwalEnter" TargetType="{x:Type Button}">
+            <Grid x:Name="controlLayout" Width="150">
+                <Rectangle  x:Name="buttonSurface" RadiusX="5" RadiusY="5" Fill="White" Stroke="Black"/>
+                <Label x:Name="buttonCaption" VerticalAlignment="Center"
+                    HorizontalAlignment="Center" FontFamily="Times New Roman" 
+                    FontSize="16" Content="Вход"></Label>
+            </Grid>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter TargetName="buttonSurface" Property="Fill" Value="LightSkyBlue" ></Setter>
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter TargetName="buttonSurface" Property="Fill" Value="DeepSkyBlue" ></Setter>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+        
+
+
+        <ControlTemplate x:Key="ButtonOwalReg" TargetType="{x:Type Button}">
+            <Grid x:Name="controlLayout" Width="150">
+                <Rectangle  x:Name="buttonSurface" RadiusX="5" RadiusY="5" Fill="White" Stroke="Black"/>
+                <Label x:Name="buttonCaption" VerticalAlignment="Center"
+                    HorizontalAlignment="Center" FontFamily="Times New Roman" 
+                    FontSize="16" Content="Регистрация"></Label>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="buttonSurface" Property="Fill" Value="LightSkyBlue" ></Setter>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter TargetName="buttonSurface" Property="Fill" Value="DeepSkyBlue" ></Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+
+        <ControlTemplate x:Key="ButtonOwalExit" TargetType="{x:Type Button}">
+            <Grid x:Name="controlLayout" Width="150">
+                <Rectangle  x:Name="buttonSurface" RadiusX="5" RadiusY="5" Fill="White" Stroke="Black"/>
+                <Label x:Name="buttonCaption" VerticalAlignment="Center"
+                    HorizontalAlignment="Center" FontFamily="Times New Roman" 
+                    FontSize="16" Content="Выход"></Label>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="buttonSurface" Property="Fill" Value="LightSkyBlue" ></Setter>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter TargetName="buttonSurface" Property="Fill" Value="DeepSkyBlue" ></Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
     </Application.Resources>
 </Application>

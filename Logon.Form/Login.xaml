@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Logon.Form"
         mc:Ignorable="d"
-        Title="Вход" Height="450" Width="800" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="ToolWindow">
+        Title="Вход" Height="450" Width="800" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None" Closed="Window_Closed">
     <Grid Name = "MyGrid" Background="#FF5FD3FF" MouseWheel="MyGrid_MouseWheel">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -54,9 +54,8 @@
         
         <Button Name="LeftRoll" Grid.Row="1" Grid.Column="0"  HorizontalAlignment="Left" Width="15" Content="&lt;" Click="Roll_Click"/>
         <Button Name="RightRoll"  Grid.Row="1" Grid.Column="2"  HorizontalAlignment="Right" Width="15" Content="&gt;" Click="Roll_Click" />
-
+        
         <Label Name ="LogPerson" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center"  VerticalAlignment="Center" FontFamily="Times New Roman" FontSize="20"/>
-
         <Button Name="Profile" Grid.Row="2" Grid.Column="1" Content="Просмотреть профиль"  VerticalAlignment="Center" HorizontalAlignment="Center" Width="250" FontFamily="Times New Roman" FontSize="24" Background="White" Click="Profile_Click" Visibility="Hidden"/>
 
         <GridSplitter Grid.ColumnSpan="3" Grid.Row="0" Height="3"
