@@ -5,42 +5,38 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Logon.Form"
         mc:Ignorable="d"
-        Title="Вход" Height="320" Width="400" Background="#FFA3DBFB" ResizeMode="NoResize" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen">
+        Title="Вход" Height="325" Width="450" Background="#FFA3DBFB" ResizeMode="NoResize" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid Margin="25,25,25,25" >
-            <Grid Margin="5,5,5,5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="2*"/>
-                </Grid.ColumnDefinitions>
+            <Border BorderBrush="Black" BorderThickness="3">
+                <Grid Margin="5,5,5,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="1.6*"/>
+                    </Grid.ColumnDefinitions>
 
-                <Grid>
-                    <GridSplitter HorizontalAlignment="Right" VerticalAlignment="Stretch" Grid.RowSpan="2" Width="3" Background="Black" IsEnabled="False"/>
-                    <Image Name="ProfileImage" Margin="5,45,10,45" />
-                </Grid>
+                    <Grid>
+                        <GridSplitter HorizontalAlignment="Right" VerticalAlignment="Stretch" Grid.RowSpan="2" Width="3" Background="Black" IsEnabled="False"/>
+                        <Image Name="ProfileImage" Margin="5,45,10,45" />
+                    </Grid>
 
-                <StackPanel Name="LoginPanel" Grid.Column="1"  Margin="25,0,25,0" >
-                    <StackPanel Name="PasswordPanel">
-                        <Label Content="Логин" HorizontalAlignment="Left" FontFamily="Times New Roman" />
-                        <ComboBox Name="LoginEnter" IsSynchronizedWithCurrentItem="True" IsEditable="True" SelectionChanged="LoginEnter_SelectionChanged"/>
-                        <Label Content="Пароль" HorizontalAlignment="Left" FontFamily="Times New Roman" />
-                        <PasswordBox Name="PasswordEnter"/>
-                        
-                        <CheckBox Name="IsLog" Content="Оставаться в сети" Margin="0,5,0,0"/>
+                    <StackPanel Name="LoginPanel" Grid.Column="1"  Margin="25,0,25,0" >
+                        <StackPanel Name="PasswordPanel">
+                            <Label Content="Логин" HorizontalAlignment="Left" FontFamily="Times New Roman" />
+                            <ComboBox Name="LoginEnter" IsSynchronizedWithCurrentItem="True" IsEditable="True" SelectionChanged="LoginEnter_SelectionChanged" KeyDown="LoginEnter_KeyDown"/>
+                            <Label Content="Пароль" HorizontalAlignment="Left" FontFamily="Times New Roman" />
+                            <PasswordBox Name="PasswordEnter" KeyDown="PasswordEnter_KeyDown"/>
 
-                        <Button Template="{DynamicResource ButtonOwalEnter}" Name="Enter"  Click="Enter_Click" Margin="0,6,0,0"/>
-                        <Button Template="{DynamicResource ButtonOwalReg}" Name="Regist" Click="Regist_Click" Margin="0,6,0,0"/>
-                        <Button Template="{DynamicResource ButtonOwalExit}" Name="Exit" Click="Exit_Click" Margin="0,6,0,0"/>
+                            <CheckBox Name="IsLog" Content="Оставаться в сети" Margin="0,5,0,0"/>
+                            <CheckBox Name="IsRemember" Content="Запомнить" Margin="0,0,0,0"/>
+
+                            <Button Template="{DynamicResource ButtonOwal}" Name="Enter"  Click="Enter_Click" Margin="0,6,0,0" Content="Вход" FontFamily="Times New Roman" FontSize="20"/>
+                            <Button Template="{DynamicResource ButtonOwal}" Name="Regist" Click="Regist_Click" Margin="0,6,0,0" Content="Регистрация" FontFamily="Times New Roman" FontSize="20"/>
+                            <Button Template="{DynamicResource ButtonOwal}" Name="Exit" Click="Exit_Click" Margin="0,6,0,0" Content="Выход" FontFamily="Times New Roman" FontSize="20" />
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-            </Grid>
-
-            <GridSplitter HorizontalAlignment="Right" VerticalAlignment="Stretch"  Width="3" Background="Black" IsEnabled="False"/>
-            <GridSplitter HorizontalAlignment="Left" VerticalAlignment="Stretch"  Width="3" Background="Black" IsEnabled="False"/>
-
-            <GridSplitter HorizontalAlignment="Stretch" VerticalAlignment="Top"  Height="3" Background="Black" IsEnabled="False"/>
-            <GridSplitter HorizontalAlignment="Stretch" VerticalAlignment="Bottom"  Height="3" Background="Black" IsEnabled="False"/>
-
+                </Grid>
+            </Border>
         </Grid>
     </Grid>
 </Window>

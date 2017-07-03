@@ -91,17 +91,17 @@ namespace Logon.Form
 
 
             if (Login.Text == "")
-                MessageBox.Show("Введите логин!", "Ошибка!");
+                MessageBox.Show("Введите логин!", "Предупреждение!");
             else
             {
                 if (_allPersons.Any(x => x.login == Login.Text))
-                    MessageBox.Show("Логин уже занят!", "Ошибка!");
+                    MessageBox.Show("Логин уже занят!", "Предупреждение!");
                 else
                 {
                     newPerson.login = Login.Text;
                     if (PasswordOrig.Password != PasswordControl.Password)
                     {
-                        MessageBox.Show("Пароли не совпадают!", "Ошибка!");
+                        MessageBox.Show("Пароли не совпадают!", "Предупреждение!");
                     }
                     else
                     {
@@ -111,6 +111,14 @@ namespace Logon.Form
                         Close();
                     }
                 }
+            }
+        }
+
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Escape)
+            {
+                Close();
             }
         }
     }

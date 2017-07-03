@@ -42,11 +42,11 @@ namespace Logon.Form
 
             for (int i = 1; i <= 31; i++)
             {
-                birthDay.Items.Add(i-1);
+                birthDay.Items.Add(i);
             }
             for (int i = 1; i <= 12; i++)
             {
-                birthMonth.Items.Add(i-1);
+                birthMonth.Items.Add(i);
             }
             for (int i = 0; i < 120; i++)
             {
@@ -59,8 +59,8 @@ namespace Logon.Form
 
             try
             {
-                birthDay.SelectedIndex = Convert.ToInt32(_person.birthDateDay);
-                birthMonth.SelectedIndex = Convert.ToInt32(_person.birthDateMonth);
+                birthDay.SelectedIndex = Convert.ToInt32(_person.birthDateDay)-1;
+                birthMonth.SelectedIndex = Convert.ToInt32(_person.birthDateMonth)-1;
                 birthYear.SelectedIndex = Convert.ToInt32(_person.birthDateYear) - 1900;
             }
             catch (Exception)
@@ -135,13 +135,13 @@ namespace Logon.Form
             if (isEditPassword)
                 if (PasswordOld.Password != _person.password)
                 {
-                    MessageBox.Show("Пароль неверный!", "Ошибка!");
+                    MessageBox.Show("Пароль неверный!", "Предупреждение!");
                 }
                 else
                 {
                     if (PasswordControl.Password != PasswordOrig.Password)
                     {
-                        MessageBox.Show("Пароли не совпадают!", "Ошибка!");
+                        MessageBox.Show("Пароли не совпадают!", "Предупреждение!");
                     }
                     else
                     {
@@ -191,6 +191,20 @@ namespace Logon.Form
         {
             fileWork.DelProfile(_person);
             Close();
+        }
+
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Escape)
+            {
+                Close();
+            }
+        }
+
+        private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.RightButton == System.Windows.Input.MouseButtonState.Pressed)
+                Close();
         }
     }
 }

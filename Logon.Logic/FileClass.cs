@@ -91,19 +91,20 @@ namespace Logon.Logic
         /// <summary>
         /// Удаление сохранённого профиля
         /// </summary>
-        /// <param name="person"></param>
-        public void IsLogonFalse()
+        /// <param name="dir">название рабочего файла</param>
+        public void IsLogonFalse(string dir)
         {
-            File.Delete(homeDirPersons + @"Online\Online.txt");
+            File.Delete(homeDirPersons + @"Online\" + dir + ".txt");
         }
 
         /// <summary>
-        /// Чтение сохранённого профиля
+        /// Чтение сохранённого/запомненного профиля
         /// </summary>
+        /// <param name="dir">название рабочего файла</param>
         /// <returns></returns>
-        public PersonInfo IsLogonRead()
+        public PersonInfo IsLogonRead(string dir)
         {
-            StreamReader read = new StreamReader(homeDirPersons + @"Online\Online.txt");
+            StreamReader read = new StreamReader(homeDirPersons + @"Online\" + dir + ".txt");
 
             PersonInfo person = new PersonInfo();
 
@@ -127,12 +128,12 @@ namespace Logon.Logic
         }
 
         /// <summary>
-        /// Запись сохранённого профиля
+        /// Запись сохранённого/запомненного профиля
         /// </summary>
-        /// <param name="person">профиль</param>
-        public void IsLogonWrite(PersonInfo person)
+        /// <param name="dir">название рабочего файла</param>
+        public void IsLogonWrite(PersonInfo person, string dir)
         {
-            StreamWriter write = new StreamWriter(homeDirPersons + @"Online\Online.txt");
+            StreamWriter write = new StreamWriter(homeDirPersons + @"Online\" + dir + ".txt");
 
             write.WriteLine(person.login);
             write.WriteLine(person.name);

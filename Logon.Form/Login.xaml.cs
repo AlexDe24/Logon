@@ -19,13 +19,10 @@ namespace Logon.Form
         Registration _regist;
         Profile _personProfile;
         List<PersonInfo> _persons;
-        List<GroupBox> _personBox;
+        List<Grid> _personBox;
         List<PersonInfo> _findPerson;
         PersonInfo _logPerson;
         Access _LogForm;
-
-        int _startI;
-        int _endI;
 
         public Login(PersonInfo logPerson, Access LogForm)
         {
@@ -33,16 +30,12 @@ namespace Logon.Form
 
             _LogForm = LogForm;
 
-            _startI = 0;
-            _endI = 3;
-
             _logPerson = logPerson; //пользватель, под которым сделан вход
             _persons = new List<PersonInfo>(); //класс данных о пользователе
             _fileWork = new FileClass(); //класс работы с файлами
-            _personBox = new List<GroupBox>(); //GroupBox для отображения пользователей
+            _personBox = new List<Grid>(); //GroupBox для отображения пользователей
             _findPerson = new List<PersonInfo>(); //лист для поиска по параметру
 
-            Find.Content = "Поиск Выкл.";
             Update();
         }
 
@@ -51,22 +44,12 @@ namespace Logon.Form
         /// </summary>
         void Update()
         {
-            Profile.Visibility = Visibility.Hidden;
+            _logPerson = _fileWork.ReadProfiles().Where(x => x.login == _logPerson.login).First();
+            ProfileImage.Source = new BitmapImage(new Uri(_logPerson.avatarAddres));
 
-            if (_logPerson != null)
-            {
-                LogOutBox.Height = 25;
-                LogOutBox.Visibility = Visibility.Visible;
-                LogPerson.Content = "Вы вошли как " + _logPerson.surname + " " + _logPerson.name + ".";
-            }
-            else
-            {
-                LogOutBox.Height = 0;
-                LogOutBox.Visibility = Visibility.Hidden;
-                LogPerson.Content = "";
-            }
+            LogPerson.Content = "Вы вошли как " + _logPerson.login + "\n" + _logPerson.name + " " + _logPerson.surname;
 
-            PersonGrid.Children.Clear();
+            ProfilePanel.Children.Clear();
             _personBox.Clear();
 
             _findPerson = _fileWork.ReadProfiles();
@@ -74,22 +57,19 @@ namespace Logon.Form
 
             for (int i = 0; i < _findPerson.Count; i++)
             {
-                if (_findPerson[i].login.StartsWith(FindTextBox.Text))
+                if (_findPerson[i].login.ToUpper().StartsWith(FindTextBox.Text.ToUpper()))
                     _persons.Add(_findPerson[i]);
             }            
 
             int k = 0;
 
-            for (int i = _startI; i < _endI; i++)
+            for (int i = 0; i < _persons.Count; i++)
             {
                 if (_persons.Count > i)
                 {
                     _personBox.Add(CreatePerson(_persons[i]));
 
-                    PersonGrid.Children.Add(_personBox[k]);
-
-                    Grid.SetRow(_personBox[k], 1);
-                    Grid.SetColumn(_personBox[k], 1 + k * 2);
+                    ProfilePanel.Children.Add(_personBox[k]);
 
                     k++;
                 }
@@ -101,7 +81,7 @@ namespace Logon.Form
         /// </summary>
         /// <param name="_person">класс пользователя</param>
         /// <returns></returns>
-        GroupBox CreatePerson(PersonInfo _person)
+        Grid CreatePerson(PersonInfo _person)
         {
             Image avatar = new Image() //элемент для отображение картинки профиля
             {
@@ -131,6 +111,8 @@ namespace Logon.Form
 
             Grid gr = new Grid(); //сетка для закрепления имени и картинки
 
+            gr.Margin = new Thickness(0,5,0,0);
+
             gr.RowDefinitions.Add(rd1);
             gr.RowDefinitions.Add(rd2);
             gr.Children.Add(nameLbl);
@@ -142,39 +124,35 @@ namespace Logon.Form
             Grid.SetColumn(nameLbl, 0);
             Grid.SetRow(nameLbl, 1);
 
-            GroupBox gBox = new GroupBox(); //контейнер для хранения сетки
-
-            gBox.Name = "ID" + _person.login;
-            gBox.Content = gr;
-            gBox.MouseDown += ChoosePerson;
-
-            return gBox;
+            gr.Name = "ID" + _person.login;
+            gr.MouseDown += Profile_Click;
+            
+            return gr;
         }
 
         /// <summary>
-        /// Изменение GroypBox при его выборе
+        /// Вход в профиль
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ChoosePerson(object sender, MouseButtonEventArgs e)
+        private void Profile_Click(object sender, RoutedEventArgs e)
         {
-            for (int i = 0; i < _personBox.Count; i++)
+            PersonInfo person = _persons.Where(x => "ID" + x.login == (sender as Grid).Name).First();
+
+            int personsCount = _persons.Count;
+
+            _personProfile = new Profile(person, _logPerson); //класс профиля
+
+            Visibility = Visibility.Hidden;
+            _personProfile.ShowDialog();
+            Visibility = Visibility.Visible;
+
+            if (personsCount > _fileWork.ReadProfiles().Count && person.login == _logPerson.login)
             {
-                _personBox[i].Background = new SolidColorBrush();
-                _personBox[i].Opacity = 100;
+                LogOut_Click(null, null);
             }
 
-            Color backCol = new Color()
-            {
-                A = 100,
-                R = 50,
-                G = 50,
-                B = 100
-            };
-
-            Profile.Visibility = Visibility.Visible;
-            (sender as GroupBox).Opacity = 50;
-            (sender as GroupBox).Background = new SolidColorBrush(backCol);
+            Update();
         }
 
         /// <summary>
@@ -197,53 +175,6 @@ namespace Logon.Form
                 _logPerson = _regist.newPerson;
             }
 
-            Update();
-
-        }
-
-        /// <summary>
-        /// Вход в профиль
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Profile_Click(object sender, RoutedEventArgs e)
-        {
-            PersonInfo person = _persons.Where(x => "ID" + x.login == _personBox.Where(y => y.Opacity < 100).First().Name).First();
-
-            int personsCount = _persons.Count;
-
-            _personProfile = new Profile(person, _logPerson); //класс профиля
-
-            Visibility = Visibility.Hidden;
-            _personProfile.ShowDialog();
-            Visibility = Visibility.Visible;
-
-            if (personsCount > _fileWork.ReadProfiles().Count && person.login == _logPerson.login)
-            {
-                LogOut_Click(null, null);
-            }
-            Update();
-        }
-
-        /// <summary>
-        /// При нажатии кнопки "Поиск"
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Find_Click(object sender, RoutedEventArgs e)
-        {
-            FindTextBox.Clear();
-
-            if (Find.Content == "Поиск Выкл.")
-            {
-                Find.Content = "Поиск Вкл.";
-                FindPanel.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                Find.Content = "Поиск Выкл.";
-                FindPanel.Visibility = Visibility.Hidden;
-            }
             Update();
         }
 
@@ -269,65 +200,7 @@ namespace Logon.Form
         }
 
         /// <summary>
-        /// Функция для прокрутки пользователей
-        /// </summary>
-        /// <param name="IsLeft"></param>
-        void Roll(bool IsLeft)
-        {
-            if (IsLeft)
-            {
-                if (_startI != 0)
-                {
-                    _startI--;
-                    _endI--;
-                }
-            }
-            if (!IsLeft)
-            {
-                if (_endI <= _persons.Count - 1)
-                {
-                    _startI++;
-                    _endI++;
-                }
-            }
-
-            Update();
-        }
-
-        /// <summary>
-        /// Смещение панели при прокручивании колёсика
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MyGrid_MouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            if (e.Delta < 0)
-                Roll(true);
-            else
-                Roll(false);
-        }
-
-        /// <summary>
-        /// Смещение панели при нажатии кнопок
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Roll_Click(object sender, RoutedEventArgs e)
-        {
-
-            if ((sender as Button).Name == "LeftRoll")
-            {
-                Roll(true);
-            }
-            else
-            {
-                Roll(false);
-            }
-            
-        }
-
-        /// <summary>
-        /// При нажатии кнопки "Закрыть"
+        /// При нажатии кнопки "Выйти"
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -338,20 +211,24 @@ namespace Logon.Form
         }
 
         /// <summary>
-        /// При нажатии кнопки "Выход"
+        /// При нажатии кнопки "Сменить пользователя"
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void LogOut_Click(object sender, RoutedEventArgs e)
         {
-            _fileWork.IsLogonFalse();
+            _fileWork.IsLogonFalse("Online");
             _LogForm.Visibility = Visibility.Visible;
             Close();
         }
 
-        private void Window_Closed(object sender, EventArgs e)
+        private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-                
+            if (e.Key == System.Windows.Input.Key.Escape)
+            {
+                _LogForm.Close();
+                Close();
+            }
         }
     }
 }

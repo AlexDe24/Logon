@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Logon.Logic;
+using System.Threading;
+using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace Logon.Form
 {
@@ -31,22 +27,78 @@ namespace Logon.Form
             InitializeComponent();
 
             _fileWork = new FileClass(); //класс работы с файлами
-            _persons = _fileWork.ReadProfiles(); //класс данных о пользователе
             _findPerson = new List<PersonInfo>(); //лист для поиска по параметру
 
-            
+            Update();
 
             try
             {
-                _mainForm = new Login(_fileWork.IsLogonRead(), this);
+                LoginEnter.Text = _fileWork.IsLogonRead("Remember").login;
+                PasswordEnter.Focus();
+            }
+            catch (Exception)
+            {
+            }
+
+            try
+            {
+                _mainForm = new Login(_fileWork.IsLogonRead("Online"), this);
 
                 Visibility = Visibility.Hidden;
                 _mainForm.ShowDialog();
-                //Close();
             }
             catch (Exception)
             { 
             }
+
+            Dispatcher.BeginInvoke((Action)delegate
+            {
+                TextBox textBox = GetChildFromVisualTree(LoginEnter, typeof(TextBox)) as TextBox;
+                if (textBox != null)
+                {
+                    textBox.Focus();
+                }
+            }, DispatcherPriority.Loaded);
+            
+        }
+
+        /// <summary>
+        /// Страшная магия устанвливающая фокус на комбо бокс
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="objectType"></param>
+        /// <returns></returns>
+        public DependencyObject GetChildFromVisualTree(DependencyObject parent, Type objectType)
+        {
+            if (parent == null)
+                return null;
+
+            DependencyObject returnObject = null;
+            int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < childrenCount; i++)
+            {
+                DependencyObject visualElement = VisualTreeHelper.GetChild(parent, i);
+                if (objectType.IsInstanceOfType(visualElement))
+                {
+                    return visualElement;
+                }
+                else
+                {
+                    returnObject = GetChildFromVisualTree(visualElement, objectType);
+                    if (returnObject != null)
+                    {
+                        return returnObject;
+                    }
+                }
+            }
+            return null;
+        }
+
+        void Update()
+        {
+            _persons = _fileWork.ReadProfiles(); //класс данных о пользователе
+
+            LoginEnter.Items.Clear();
 
             for (int i = 0; i < _persons.Count; i++)
             {
@@ -61,22 +113,38 @@ namespace Logon.Form
             {
                 _mainForm = new Login(_persons[LoginEnter.SelectedIndex], this);
 
+                try
+                {
+                    if (IsLog.IsChecked == true)
+                    {
+                        _fileWork.IsLogonWrite(_persons[LoginEnter.SelectedIndex], "Online");
+                    }
+                    else
+                        _fileWork.IsLogonFalse("Online");
+
+                    if (IsRemember.IsChecked == true)
+                    {
+                        _fileWork.IsLogonWrite(_persons[LoginEnter.SelectedIndex], "Remember");
+                    }
+                    else
+                        _fileWork.IsLogonFalse("Remember");
+                }
+                catch (Exception)
+                {
+                }
+
                 if (_persons[LoginEnter.SelectedIndex].password == PasswordEnter.Password)
                 {
                     Visibility = Visibility.Hidden;
                     _mainForm.ShowDialog();
-                    //Close();
+                    Update();
                 }
                 else
-                    MessageBox.Show("Неверный пароль", "Ошибка!");
+                    MessageBox.Show("Неверный пароль.", "Предупреждение!");
 
-                if (IsLog.IsChecked == true)
-                {
-                    _fileWork.IsLogonWrite(_persons[LoginEnter.SelectedIndex]);
-                }
-                else
-                    _fileWork.IsLogonFalse();
             }
+            else
+                MessageBox.Show("Пользователь не найден.", "Предупреждение!");
             PasswordEnter.Clear();
         }
 
@@ -110,6 +178,18 @@ namespace Logon.Form
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void LoginEnter_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                PasswordEnter.Focus();
+        }
+
+        private void PasswordEnter_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                Enter_Click(null, null);
         }
     }
 }
